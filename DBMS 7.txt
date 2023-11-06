@@ -1,0 +1,27 @@
+** DBMS 7**
+create or replace function
+   def(temp_roll int)return varchar2
+    is
+    temp_class varchar(20);
+    temp_marks int;
+    begin
+    select marks into temp_marks from student where name=(select name from result where temp_roll=roll);
+    if temp_marks<=1500 and temp_marks>=990 then
+    temp_class:='distinction';
+   return temp_class;
+   update result set class='distinction' where temp_roll=roll;
+   elsif temp_marks<=989 and temp_marks>=900 then
+   temp_class:='first class';
+   return temp_class;
+   update result set class='first class' where temp_roll=roll;
+   else
+   temp_class:='higher second';
+   return temp_class;
+   update result set class='higher second' where temp_roll=roll;
+   end if;
+   exception
+   when no_data_found then
+   temp_class:='no record found';
+   return temp_class;
+   end;
+   /
